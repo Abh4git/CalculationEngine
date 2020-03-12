@@ -2,6 +2,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
 using CalculationEngine;
+using Calculations.Core.Interfaces;
+using Calculations.Core.Entities;
+using Calculations.Core.Enums;
 
 namespace CalculationEngineUnitTests
 {
@@ -76,5 +79,38 @@ namespace CalculationEngineUnitTests
             Assert.AreEqual(calculationIRR.Result, .13, 2);
 
         }
+
+        [TestMethod]
+        public void TestNPVCalculationDynamicCashFlowFactoryCreation()
+        {
+            double initialInvst = 200000;
+            double discountRate = .04;
+
+            List<double> yearlyCashFlows = new List<double>();
+            yearlyCashFlows.Add(50000);
+            yearlyCashFlows.Add(50000);
+            yearlyCashFlows.Add(50000);
+            yearlyCashFlows.Add(50000);
+            yearlyCashFlows.Add(50000);
+
+            yearlyCashFlows.Add(45000);
+            yearlyCashFlows.Add(45000);
+            yearlyCashFlows.Add(45000);
+            yearlyCashFlows.Add(45000);
+            yearlyCashFlows.Add(45000);
+
+            FinancialReturnInputs finROIInputs=new FinancialReturnInputs();
+            finROIInputs.InitialInvestment = initialInvst;
+            finROIInputs.CashInFlows = yearlyCashFlows;
+            finROIInputs.DiscountRate = discountRate;
+           
+            ///Initailizing NPVCalculation class with the parameters of Initail investment, discountrate, yearly cash flow, number of years
+            ///then the Execute method is called and result is found in Result property of the class.
+            ICalcuation calcuationNPV = new CalculationFactory().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
+            bool executed = calcuationNPV.Execute();
+            Assert.AreEqual(calcuationNPV.Result, 187249.42, 2);
+
+        }
+
     }
 }

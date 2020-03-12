@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Calculations.Core.Interfaces;
+using Calculations.Core.Entities;
 namespace CalculationEngine
 {
     /// <summary>
@@ -35,6 +36,20 @@ namespace CalculationEngine
             _numberofyears = cashInFlows.Count;
         }
 
+        public NPVCalculation(FinancialReturnInputs finROIInputs)
+        {
+            _initialInvestment = finROIInputs.InitialInvestment;
+            _discountRate = finROIInputs.DiscountRate;
+            _cashInFlows = finROIInputs.CashInFlows;
+            _cashInFlow = finROIInputs.FixedCashinFlow;
+            if (!finROIInputs.IsCashinFlowFixed)
+            {
+                _numberofyears = _cashInFlows.Count;
+            } else
+            {
+                _numberofyears = finROIInputs.NumberofYears;
+            }
+        }
         public double Result
         {
             get
