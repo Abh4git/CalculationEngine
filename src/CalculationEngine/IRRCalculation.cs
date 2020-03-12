@@ -10,31 +10,32 @@ namespace CalculationEngine
     /// Numberof Years and based on these calculate NPV and placed in 
     /// Result  property. The class implements ICalculation interface.
     /// </summary>
-    public class NPVCalculation : ICalcuation
+    public class IRRCalculation : ICalcuation
     {
         private double _result;
         private double _initialInvestment;
-        private double _discountRate;
+        private double _mindiscountRate;
+        private double _maxdiscountRate;
         private double _cashInFlow;
-        private double _numberofyears;
         private List<double> _cashInFlows;
-                
-        public NPVCalculation(double initalInvestment, double discountRate, double cashInFlow,  double numberOfYears)
+        private double _numberofyears;
+
+        public IRRCalculation(double initalInvestment, double initialdiscountRate, double maxdiscountRate,double cashInFlow, double numberOfYears)
         {
             _initialInvestment = initalInvestment;
-            _discountRate = discountRate;
+            _mindiscountRate = initialdiscountRate;
+            _maxdiscountRate = maxdiscountRate;
             _cashInFlow = cashInFlow;
             _numberofyears = numberOfYears;
         }
-
-        public NPVCalculation(double initalInvestment, double discountRate, List<double> cashInFlows)
+        public IRRCalculation(double initalInvestment, double initialdiscountRate, double maxdiscountRate, List<double> cashInFlows)
         {
             _initialInvestment = initalInvestment;
-            _discountRate = discountRate;
-            _cashInFlows = cashInFlows ;
-            _numberofyears = cashInFlows.Count;
+            _mindiscountRate = initialdiscountRate;
+            _maxdiscountRate = maxdiscountRate;
+            _cashInFlows = cashInFlows;
+            _numberofyears = cashInFlows.Count ;
         }
-
         public double Result
         {
             get
@@ -49,31 +50,49 @@ namespace CalculationEngine
 
         public bool Execute()
         {
-            double npv = 0;
-            double nominator = _cashInFlow;
-            double denominator = 1; 
-            double resultInital = 0;
-            if (_cashInFlows == null)
+            double npv = -1;
+            double discountRate=0;
+            for (double i = _mindiscountRate; i <= _maxdiscountRate; i=i+.05)
             {
-                for (int i = 1; i <= _numberofyears; i++)
+                npv = CalculateNPV(i);
+                if (npv <= 0)
                 {
-                    denominator = Math.Pow((1 + _discountRate), i);
-                    resultInital += nominator / denominator;
+                    discountRate = i;
+                    break;
                 }
             }
-            else
+            //double resultInital = nominator / denominator;
+            _result = discountRate;
+            return true;
+        }
+        public double CalculateNPV(double currentDiscountrate)
+        {
+
+            double npv = 0;
+            double nominator = _cashInFlow;
+            double denominator = 1;
+            double resultInital = 0;
+
+            if (_cashInFlows==null)
+            { 
+                for (int i = 1; i <= _numberofyears; i++)
+                {
+                    denominator = Math.Pow((1 + currentDiscountrate), i);
+                    resultInital += nominator / denominator;
+                }
+            } else
             {
                 for (int i = 1; i <= _numberofyears; i++)
                 {
                     nominator = _cashInFlows[i - 1];
-                    denominator = Math.Pow((1 + _discountRate), i);
+                    denominator = Math.Pow((1 + currentDiscountrate), i);
                     resultInital += nominator / denominator;
                 }
             }
+
             //double resultInital = nominator / denominator;
             npv = resultInital - _initialInvestment;
-            _result = npv;
-            return true;
+            return npv;
         }
     }
 }
