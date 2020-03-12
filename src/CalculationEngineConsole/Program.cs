@@ -1,26 +1,34 @@
 ﻿using System;
+using Calculations.Core.Interfaces;
+using Calculations.Core.Enums;
+using Calculations.Core.Entities;
+using CalculationEngine;
 using System.Collections.Generic;
 
-namespace CalculationEngine
+namespace CalculationEngineConsole
 {
-    /// <summary>
-    /// Entry point to running calculation.
-    /// </summary>
     class Program
     {
         static void Main(string[] args)
         {
+
             Console.WriteLine("Hello World Calculation Engine!");
             Console.WriteLine("-------------------------------");
             double initialInvst = 10000;
             double discountRate = .1;
             double yearlycashIn = 3000;
             double noofYears = 5;
+            FinancialReturnInputs finROIInputs = new FinancialReturnInputs();
+            finROIInputs.IsCashinFlowFixed = true;
+            finROIInputs.DiscountRate = discountRate;
+            finROIInputs.InitialInvestment = initialInvst;
+            finROIInputs.NumberofYears = noofYears;
+            finROIInputs.FixedCashinFlow = yearlycashIn;
             ///Initailizing NPVCalculation class with the parameters of Initail investment, discountrate, yearly cash flow, number of years
             ///then the Execute method is called and result is found in Result property of the class.
-            ICalcuation calcuationNPV = new NPVCalculation(initialInvst, discountRate,yearlycashIn, noofYears);
-            bool executed=calcuationNPV.Execute();
-            Console.WriteLine(String.Format("With Initial Investment {0} and Discount Rate {1} and cashInFlow {2} , noof years{3} : NPV={4}", initialInvst, discountRate,yearlycashIn, noofYears, calcuationNPV.Result));
+            ICalcuation calcuationNPV = new CalculationFactory().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
+            bool executed = calcuationNPV.Execute();
+            Console.WriteLine(String.Format("With Initial Investment {0} and Discount Rate {1} and cashInFlow {2} , noof years{3} : NPV={4}", initialInvst, discountRate, yearlycashIn, noofYears, calcuationNPV.Result));
 
             initialInvst = 200000;
             discountRate = .04;
@@ -39,14 +47,25 @@ namespace CalculationEngine
             yearlyCashFlows.Add(45000);
 
 
+            finROIInputs.IsCashinFlowFixed = false;
+            finROIInputs.DiscountRate = discountRate;
+            finROIInputs.InitialInvestment = initialInvst;
+            finROIInputs.CashInFlows = yearlyCashFlows;
+          ;
+
             ///Initailizing NPVCalculation class with the parameters of Initail investment, discountrate, yearly cash flow, number of years
             ///then the Execute method is called and result is found in Result property of the class.
-            ICalcuation calcuationNPV2 = new NPVCalculation(initialInvst, discountRate, yearlyCashFlows);
+            ICalcuation calcuationNPV2 = new CalculationFactory().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
             bool executed2 = calcuationNPV2.Execute();
             Console.WriteLine(String.Format("With Initial Investment {0} and Discount Rate {1} and cashInFlow {2} , noof years{3} : IRR={4}", initialInvst, discountRate, yearlycashIn, noofYears, calcuationNPV2.Result));
 
-
-            ICalcuation calculationIRR = new IRRCalculation(initialInvst, discountRate,.9, yearlycashIn, noofYears);
+            finROIInputs.IsCashinFlowFixed = true;
+            finROIInputs.DiscountRate = discountRate;
+            finROIInputs.InitialInvestment = initialInvst;
+            finROIInputs.NumberofYears = noofYears;
+            finROIInputs.FixedCashinFlow = yearlycashIn;
+            finROIInputs.MaxDiscountRate = .9;
+            ICalcuation calculationIRR = new CalculationFactory().GetCalculation(CalculationTypeEnum.IRR,finROIInputs);
             bool executedIRR = calculationIRR.Execute();
             Console.WriteLine(String.Format("With Initial Investment {0} and Discount Rate {1} and cashInFlow {2} , noof years{3} : IRR={4}", initialInvst, discountRate, yearlycashIn, noofYears, calculationIRR.Result));
 

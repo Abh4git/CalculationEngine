@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Calculations.Core.Interfaces;
+using Calculations.Core.Entities;
 namespace CalculationEngine
 {
     /// <summary>
@@ -35,6 +36,22 @@ namespace CalculationEngine
             _maxdiscountRate = maxdiscountRate;
             _cashInFlows = cashInFlows;
             _numberofyears = cashInFlows.Count ;
+        }
+
+        public IRRCalculation(FinancialReturnInputs finROIInputs)
+        {
+            _initialInvestment = finROIInputs.InitialInvestment;
+            _mindiscountRate = finROIInputs.DiscountRate;
+            _maxdiscountRate = finROIInputs.MaxDiscountRate;
+            _cashInFlows = finROIInputs.CashInFlows;
+            if (_cashInFlows != null)
+            {
+                _numberofyears = _cashInFlows.Count;
+            }
+            else
+            {
+                _numberofyears = finROIInputs.NumberofYears;
+            }
         }
         public double Result
         {

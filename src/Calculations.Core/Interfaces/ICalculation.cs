@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CalculationEngine
+namespace Calculations.Core.Interfaces
 {
     /// <summary>
     /// Interface for Calculations
@@ -10,7 +10,7 @@ namespace CalculationEngine
     public interface ICalcuation
     {
         double Result { get; set; }
-        
+
         bool Execute();
 
 
