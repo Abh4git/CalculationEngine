@@ -7,7 +7,7 @@ namespace CalculationEngine
     /// <summary>
     /// Interface for Calculations
     /// </summary>
-    interface ICalcuation
+    public interface ICalcuation
     {
         double Result { get; set; }
         
