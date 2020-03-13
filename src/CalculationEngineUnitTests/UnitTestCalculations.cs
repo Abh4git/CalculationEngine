@@ -80,6 +80,7 @@ namespace CalculationEngineUnitTests
 
         }
 
+        //Also integration test
         [TestMethod]
         public void TestNPVCalculationDynamicCashFlowFactoryCreation()
         {
@@ -106,7 +107,7 @@ namespace CalculationEngineUnitTests
            
             ///Initailizing NPVCalculation class with the parameters of Initail investment, discountrate, yearly cash flow, number of years
             ///then the Execute method is called and result is found in Result property of the class.
-            ICalcuation calcuationNPV = new CalculationFactory().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
+            ICalcuation calcuationNPV = CalculationFactory.Instance().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
             bool executed = calcuationNPV.Execute();
             Assert.AreEqual(calcuationNPV.Result, 187249.42, 2);
 

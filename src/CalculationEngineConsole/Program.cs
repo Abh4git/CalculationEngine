@@ -26,7 +26,7 @@ namespace CalculationEngineConsole
             finROIInputs.FixedCashinFlow = yearlycashIn;
             ///Initailizing NPVCalculation class with the parameters of Initail investment, discountrate, yearly cash flow, number of years
             ///then the Execute method is called and result is found in Result property of the class.
-            ICalcuation calcuationNPV = new CalculationFactory().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
+            ICalcuation calcuationNPV = CalculationFactory.Instance().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
             bool executed = calcuationNPV.Execute();
             Console.WriteLine(String.Format("With Initial Investment {0} and Discount Rate {1} and cashInFlow {2} , noof years{3} : NPV={4}", initialInvst, discountRate, yearlycashIn, noofYears, calcuationNPV.Result));
 
@@ -55,7 +55,7 @@ namespace CalculationEngineConsole
 
             ///Initailizing NPVCalculation class with the parameters of Initail investment, discountrate, yearly cash flow, number of years
             ///then the Execute method is called and result is found in Result property of the class.
-            ICalcuation calcuationNPV2 = new CalculationFactory().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
+            ICalcuation calcuationNPV2 = CalculationFactory.Instance().GetCalculation(CalculationTypeEnum.NPV,finROIInputs);
             bool executed2 = calcuationNPV2.Execute();
             Console.WriteLine(String.Format("With Initial Investment {0} and Discount Rate {1} and cashInFlow {2} , noof years{3} : IRR={4}", initialInvst, discountRate, yearlycashIn, noofYears, calcuationNPV2.Result));
 
@@ -65,7 +65,7 @@ namespace CalculationEngineConsole
             finROIInputs.NumberofYears = noofYears;
             finROIInputs.FixedCashinFlow = yearlycashIn;
             finROIInputs.MaxDiscountRate = .9;
-            ICalcuation calculationIRR = new CalculationFactory().GetCalculation(CalculationTypeEnum.IRR,finROIInputs);
+            ICalcuation calculationIRR = CalculationFactory.Instance().GetCalculation(CalculationTypeEnum.IRR,finROIInputs);
             bool executedIRR = calculationIRR.Execute();
             Console.WriteLine(String.Format("With Initial Investment {0} and Discount Rate {1} and cashInFlow {2} , noof years{3} : IRR={4}", initialInvst, discountRate, yearlycashIn, noofYears, calculationIRR.Result));
 
