@@ -10,6 +10,20 @@ namespace CalculationEngine
     public class CalculationFactory : ICalculationFactory
     {
         private ICalcuation _calculation;
+        private static ICalculationFactory _instanceCalcFactory;
+
+        protected CalculationFactory()
+        {
+
+        }
+        public static ICalculationFactory Instance()
+        {
+            if (_instanceCalcFactory==null)
+            {
+                _instanceCalcFactory = new CalculationFactory();
+            }
+            return _instanceCalcFactory;
+        }
         public ICalcuation GetCalculation(CalculationTypeEnum typeEnum, FinancialReturnInputs finROIInputs )
         {
             
