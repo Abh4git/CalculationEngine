@@ -10,6 +10,7 @@ namespace CalculationEngine
     /// this class. The Class takes InitalInvestment, DiscountRate, CashInFlow, 
     /// Numberof Years and based on these calculate NPV and placed in 
     /// Result  property. The class implements ICalculation interface.
+    /// Author: Abhilash
     /// </summary>
     public class NPVCalculation : ICalcuation
     {
