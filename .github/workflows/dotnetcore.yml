@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Build with dotnet
-      run: dotnet src/CalculationEngine.sln build --configuration Release
+      run: dotnet build src/CalculationEngine.sln --configuration Release
 
     - name: Run unit tests
       run: |
